@@ -1,17 +1,32 @@
-import { CategoriesRepository } from '../repositories/CategoriesRepository';
+import { ICategoriesRepository } from '../repositories/ICategoriesRepository';
 
 interface IRequest {
   name: string;
   description: string;
 }
 
-// SRP - single responsability principle
+// SRP - single responsibility principle, create a category
 class CreateCategoryService {
   /*
-  private categoriesRepository: CategoriesRepository, in the constructor param
-  is the same as defining a property and then called this.property = property
+  LSP, Liskov substituion principle:
+  states that any subclass object should be substitutable
+  for the superclass object from which it is derived
+
+  private categoriesRepository: ICategoriesRepository
+  
+  it's about interfaces and contracts, categoriesRepository is a subtype of ICategoriesRepository.
+  Note that this is related to dependency inversion, since if we need to change categoriesRepository to
+  PostgresCategoriesRepository or Mongo, since these classes implement ICategoriesRepository (LSP),
+  we would just have to pass the right subtype when calling the Service constructor (the responsibility of
+  using the proper subtype is not by the service, but actually by who calls the service passing
+  the proper subtype implemented (DIP)).
   */
-  constructor(private categoriesRepository: CategoriesRepository) {}
+
+  /*
+  private categoriesRepository: CategoriesRepository, in the constructor as a param
+  is the same as defining a property and then defining this.property = property in the constructor
+  */
+  constructor(private categoriesRepository: ICategoriesRepository) {}
   /*
   DIP - dependency inversion principle
 
