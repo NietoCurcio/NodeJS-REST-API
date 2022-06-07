@@ -23,7 +23,7 @@ class CreateCategoryService {
   */
 
   /*
-  private categoriesRepository: CategoriesRepository, in the constructor as a param
+  private categoriesRepository: CategoriesRepository, in the constructor as a param in Typescript
   is the same as defining a property and then defining this.property = property in the constructor
   */
   constructor(private categoriesRepository: ICategoriesRepository) {}
