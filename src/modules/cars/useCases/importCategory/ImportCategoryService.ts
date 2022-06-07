@@ -46,9 +46,9 @@ class ImportCategoryService {
     const asyncIterable = this.getCategoriesAsyncIterable(file);
     for await (const [name, description] of asyncIterable) {
       const hasCategory = this.categoriesRepository.findByName(name);
-      if (hasCategory) throw new Error('Category Already exists');
-      this.categoriesRepository.create({ name, description });
+      if (!hasCategory) this.categoriesRepository.create({ name, description });
     }
+    fs.promises.unlink(file.path);
   }
 }
 
