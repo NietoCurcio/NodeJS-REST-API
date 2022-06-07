@@ -18,6 +18,26 @@ class ImportCategoryService {
   getCategoriesAsyncIterable(
     file: Express.Multer.File
   ): AsyncIterable<IImportCategory> {
+    /*
+    Async Iterable MDN src:
+    https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for-await...of
+
+    for await...of, example:
+
+    const promise2 = new Promise((resolve, reject) => {
+      setTimeout(() => resolve(2), 5000);
+    });
+
+    const a = Promise.all([Promise.resolve(1), promise2]);
+    console.log(a.then(console.log));
+
+    (async () => {
+      for await (const p of [Promise.resolve(1), promise2]) {
+        console.log(p);
+      }
+    })();
+
+    */
     const asyncIterable = {
       [Symbol.asyncIterator]: () => {
         const stream = fs.createReadStream(file.path);
