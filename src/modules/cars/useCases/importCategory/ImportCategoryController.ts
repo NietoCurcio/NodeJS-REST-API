@@ -4,10 +4,14 @@ import { ImportCategoryService } from './ImportCategoryService';
 class ImportCategoryController {
   constructor(private importCategoryService: ImportCategoryService) {}
 
-  handle(request: Request, response: Response) {
+  async handle(request: Request, response: Response) {
     const { file } = request;
-    this.importCategoryService.execute(file);
-    return response.send();
+    try {
+      await this.importCategoryService.execute(file);
+      response.status(201).json();
+    } catch (err) {
+      response.status(403).json({ error: err.message });
+    }
   }
 }
 
