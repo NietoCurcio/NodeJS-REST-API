@@ -1,5 +1,15 @@
 # NodeJS REST API
 
+## PostgreSQL
+
+This project uses TypeORM, an Object Relational Mapper that maps model classes to tables in the database so that queries and mutations in the database use an object-oriented paradigm. It is more flexible because it's decoupled from the DBMS currently being used.
+
+There are other ways to use a database, such as:
+
+- Database Drivers: node, MongoDB Node Driver.
+- Query Builders: Knex.js.
+- Some ORM examples: Sequelize, Prisma (Prisma is a next-generation ORM since it uses Prisma schema language (PSL) rather than using classes and decorators for model definition).
+
 ## Docker
 
 A Docker container image is a package of software that includes everything needed to run an application (code and dependencies). When an image is run, it becomes a container. A container runs isolated from its environment. Therefore, even in development, it is an external service.
@@ -60,6 +70,18 @@ $ docker exec -it container-name bash
 # Access container terminal (similar to accessing a machine through ssh)
 ```
 
+Using `docker exec` command we can execute commands in the Linux machine:
+
+```shell
+$ docker exec container-name cat 0< /etc/hosts
+
+# Get container IP, redirecting stdin of cat linux utility to /etc/hosts
+
+$ docker exec container-name hostname -i
+
+# Get container IP, through hostname command
+```
+
 > Overall, both the container's id and name can be used interchangeably in these commands.
 
 We can also use docker-compose to document and configure all of the application’s service dependencies (databases, message brokers, service APIs, etc).
@@ -79,7 +101,7 @@ $ docker-compose stop
 ```
 
 ```shell
-$ docker-compose stop
+$ docker-compose down
 
 # Stops services running and removes the containers (passing --volumes flag also removes the data volume)
 ```
