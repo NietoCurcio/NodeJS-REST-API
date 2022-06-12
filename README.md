@@ -1,6 +1,6 @@
 # NodeJS REST API
 
-## PostgreSQL
+## PostgreSQL with TypeORM
 
 This project uses TypeORM, an Object Relational Mapper that maps model classes to tables in the database so that queries and mutations in the database use an object-oriented paradigm. It is more flexible because it's decoupled from the DBMS currently being used.
 
@@ -9,6 +9,10 @@ There are other ways to use a database, such as:
 - Database Drivers: node, MongoDB Node Driver.
 - Query Builders: Knex.js.
 - Some ORM examples: Sequelize, Prisma (Prisma is a next-generation ORM since it uses Prisma schema language (PSL) rather than using classes and decorators for model definition).
+
+### Migrations
+
+TypeORM also helps create migrations. Migrations are files with SQL queries to update the database schema and apply new changes to an existing database. It allows the development team to use migrations as database schema's version control.
 
 ## Docker
 
@@ -81,6 +85,8 @@ $ docker exec container-name hostname -i
 
 # Get container IP, through hostname command
 ```
+
+The execution of migrations with TypeORM is made using `docker exec` since the localhost is not connected to Postgres, but the app container.
 
 > Overall, both the container's id and name can be used interchangeably in these commands.
 

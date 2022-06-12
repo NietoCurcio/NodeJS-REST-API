@@ -1,6 +1,6 @@
 import { ListSpecificationController } from './ListSpecificationController';
 import { ListSpecificationsService } from './ListSpecificationsService';
-import { SpecificationRepository } from '../../repositories/SpecificationRepository';
+import { SpecificationRepository } from '../../repositories/implementations/SpecificationRepository';
 
 // Dependency Injection
 

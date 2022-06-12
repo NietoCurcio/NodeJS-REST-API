@@ -1,4 +1,4 @@
-import { CategoriesRepository } from '../../repositories/CategoriesRepository';
+import { CategoriesRepository } from '../../repositories/implementations/CategoriesRepository';
 import { CreateCategoryController } from './CreateCategoryController';
 import { CreateCategoryService } from './CreateCategoryService';
 
@@ -15,8 +15,10 @@ Dependency injection is an inversion of control (IoC) technique wherein you dele
 instantiation of dependencies to the IoC container.
 */
 
-const categoriesRepository = CategoriesRepository.getInstance();
+const categoriesRepository = new CategoriesRepository();
+
 const createCategoryService = new CreateCategoryService(categoriesRepository);
+
 const createCategoryController = new CreateCategoryController(
   createCategoryService
 );

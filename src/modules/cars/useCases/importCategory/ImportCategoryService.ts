@@ -1,9 +1,9 @@
 import fs from 'node:fs';
 import { parse } from 'csv-parse';
-import { CategoriesRepository } from '../../repositories/CategoriesRepository';
+import { ICategoriesRepository } from '../../repositories/ICategoriesRepository';
 
 class ImportCategoryService {
-  constructor(private categoriesRepository: CategoriesRepository) {}
+  constructor(private categoriesRepository: ICategoriesRepository) {}
 
   getCategoriesAsyncIterable(
     file: Express.Multer.File
