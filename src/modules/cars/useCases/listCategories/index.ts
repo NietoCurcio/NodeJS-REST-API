@@ -1,12 +1,12 @@
-import { CategoriesRepository } from '../../repositories/implementations/CategoriesRepository';
-import { ListCategoriesController } from './ListCategoriesController';
-import { ListCategoriesService } from './ListCategoriesService';
+// import { CategoriesRepository } from '../../repositories/implementations/CategoriesRepository';
+// import { ListCategoriesController } from './ListCategoriesController';
+// import { ListCategoriesService } from './ListCategoriesService';
 
-// Dependency Injection
+// // Dependency Injection
 
-const categoriesRepository = new CategoriesRepository();
-const listCategoriesService = new ListCategoriesService(categoriesRepository);
+// const categoriesRepository = new CategoriesRepository();
+// const listCategoriesService = new ListCategoriesService(categoriesRepository);
 
-export const listCategoriesController = new ListCategoriesController(
-  listCategoriesService
-);
+// export const listCategoriesController = new ListCategoriesController(
+//   listCategoriesService
+// );

@@ -11,6 +11,9 @@ export const PostgresDataSource = new DataSource({
   migrations: ['./src/database/migrations/*.ts'],
 });
 
+// note, running a migration
+// docker exec nodejs-rest-api npm run typeorm migration:run -- -d "./src/database/index.ts"
+
 PostgresDataSource.initialize()
   .then(() => {
     console.log('Data Source has been initialized!');

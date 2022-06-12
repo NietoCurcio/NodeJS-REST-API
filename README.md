@@ -12,7 +12,7 @@ There are other ways to use a database, such as:
 
 ### Migrations
 
-TypeORM also helps create migrations. Migrations are files with SQL queries to update the database schema and apply new changes to an existing database. It allows the development team to use migrations as database schema's version control.
+TypeORM also helps to create migrations. Migrations are files with SQL queries to update the database schema and apply new changes to an existing database. It allows the development team to use migrations as database schema's version control.
 
 ## Docker
 
