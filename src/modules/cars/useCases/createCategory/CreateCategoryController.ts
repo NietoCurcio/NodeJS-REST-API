@@ -12,7 +12,7 @@ class CreateCategoryController {
       await createCategoryUseCase.execute({ name, description });
       return response.status(201).send();
     } catch (err) {
-      return response.status(400).json({ error: err.message });
+      throw err;
     }
   }
 }

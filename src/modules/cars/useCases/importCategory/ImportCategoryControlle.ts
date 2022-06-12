@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
+import { AppError } from '../../../../errors/AppError';
 import { ImportCategoryUseCase } from './ImportCategoryUseCase';
 
 class ImportCategoryController {
@@ -11,7 +12,7 @@ class ImportCategoryController {
       await importCategoryUseCase.execute(file);
       return response.status(201).json();
     } catch (err) {
-      return response.status(403).json({ error: err.message });
+      throw new AppError('Error importing categories');
     }
   }
 }
