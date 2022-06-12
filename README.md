@@ -86,7 +86,7 @@ $ docker exec container-name hostname -i
 # Get container IP, through hostname command
 ```
 
-The execution of migrations with TypeORM is made using `docker exec` since the localhost is not connected to Postgres, but the app container.
+The execution of migrations with TypeORM is made using `docker exec` since the localhost is not connected to Postgres, but the app container is connected to the postgresql-database container.
 
 > Overall, both the container's id and name can be used interchangeably in these commands.
 

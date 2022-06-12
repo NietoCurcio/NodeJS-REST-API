@@ -1,9 +1,14 @@
 import fs from 'node:fs';
 import { parse } from 'csv-parse';
 import { ICategoriesRepository } from '../../repositories/ICategoriesRepository';
+import { inject, injectable } from 'tsyringe';
 
-class ImportCategoryService {
-  constructor(private categoriesRepository: ICategoriesRepository) {}
+@injectable()
+class ImportCategoryUseCase {
+  constructor(
+    @inject('CategoriesRepository')
+    private categoriesRepository: ICategoriesRepository
+  ) {}
 
   getCategoriesAsyncIterable(
     file: Express.Multer.File
@@ -45,11 +50,12 @@ class ImportCategoryService {
   async execute(file: Express.Multer.File): Promise<void> {
     const asyncIterable = this.getCategoriesAsyncIterable(file);
     for await (const [name, description] of asyncIterable) {
-      const hasCategory = this.categoriesRepository.findByName(name);
-      if (!hasCategory) this.categoriesRepository.create({ name, description });
+      const hasCategory = await this.categoriesRepository.findByName(name);
+      if (!hasCategory)
+        await this.categoriesRepository.create({ name, description });
     }
     fs.promises.unlink(file.path);
   }
 }
 
-export { ImportCategoryService };
+export { ImportCategoryUseCase };
