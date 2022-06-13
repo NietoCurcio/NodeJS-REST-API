@@ -114,4 +114,4 @@ $ docker-compose down
 
 ## Rocketseat Education
 
-I studied this project during the Node.js Ignite program by Microsoft. Ignite is an acceleration program focused on specialization paths according to your choice and career moment.
+I studied this project during the Node.js Ignite program by Rocketseat. Ignite is an acceleration program focused on specialization paths according to your choice and career moment.
