@@ -6,7 +6,7 @@ This project uses TypeORM, an Object Relational Mapper that maps model classes t
 
 There are other ways to use a database, such as:
 
-- Database Drivers: node, MongoDB Node Driver.
+- Database Drivers: node-postgres, MongoDB Node Driver.
 - Query Builders: Knex.js.
 - Some ORM examples: Sequelize, Prisma (Prisma is a next-generation ORM since it uses Prisma schema language (PSL) rather than using classes and decorators for model definition).
 
