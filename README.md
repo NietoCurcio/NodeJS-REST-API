@@ -112,6 +112,18 @@ $ docker-compose down
 # Stops services running and removes the containers (passing --volumes flag also removes the data volume)
 ```
 
+## Running the application
+
+```shell
+# Run the containers
+$ docker-compuse up -d
+```
+
+```shell
+# Execute the migrations in the running container
+$ docker exec nodejs-rest-api npm run typeorm migration:run -- -d "./src/database/index.ts"
+```
+
 ## Rocketseat Education
 
 I studied this project during the Node.js Ignite program by Microsoft. Ignite is an acceleration program focused on specialization paths according to your choice and career moment.

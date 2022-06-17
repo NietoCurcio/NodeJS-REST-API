@@ -3,8 +3,14 @@ import { JwtPayload, verify } from 'jsonwebtoken';
 import { AppError } from '../errors/AppError';
 import { UsersRepository } from '../modules/accounts/repositories/implementations/UsersRepository';
 
+interface IRequest extends Request {
+  user: {
+    id: string;
+  };
+}
+
 export async function ensureAuthenticated(
-  request: Request,
+  request: IRequest,
   response: Response,
   next: NextFunction
 ) {
@@ -24,6 +30,10 @@ export async function ensureAuthenticated(
     const user = await usersRepository.findById(user_id);
 
     if (!user) throw new AppError('User does not exists', 401);
+
+    request.user = {
+      id: user_id,
+    };
 
     next();
   } catch (err) {
