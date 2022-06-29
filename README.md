@@ -1,5 +1,7 @@
 # NodeJS REST API
 
+## UML Class diagram
+
 <img src=".github/UML_class_diagram.svg" width="704px">
 
 ## PostgreSQL with TypeORM
@@ -125,6 +127,50 @@ $ docker-compuse up -d
 # Execute the migrations in the running container
 $ docker exec nodejs-rest-api npm run typeorm migration:run -- -d "./src/database/index.ts"
 ```
+
+## Requirements engineering
+
+### Functional requirements
+
+| Id   | Name                            | Actor         |
+| ---- | ------------------------------- | ------------- |
+| RF01 | Register car                    | Administrator |
+| RF02 | List all available cars         | User          |
+| RF03 | List available cars by category | User          |
+| RF04 | List available cars by brand    | User          |
+| RF05 | List available cars by name     | User          |
+| RF06 | Register car's specification    | Administrator |
+| RF07 | List all specifications         | Administrator |
+| RF08 | List all categories             | User          |
+| RF09 | Register car's images           | Administrator |
+| RF10 | List all cars                   | Administrator |
+| RF11 | Register car rental             | User          |
+| RF12 | Register the car's return       | User          |
+| RF13 | List rentals                    | User          |
+| RF14 | Recover password                | User          |
+
+### Non-functional requirements
+
+| Id    | Description                                           |
+| ----- | ----------------------------------------------------- |
+| RNF01 | Use node.js multer library to upload files.           |
+| RNF02 | The cloud provider must be Amazon Web Services (AWS). |
+
+### Business rules
+
+| Id   | Description                                                                   | Functional Requirement |
+| ---- | ----------------------------------------------------------------------------- | ---------------------- |
+| RN01 | It shouldn't register a car with an existing license plate.                   | RF01                   |
+| RN02 | The users should be able to list cars even when not logged in.                | RF02, RF03, RF04, RF05 |
+| RN03 | It shouldn't register a specification for an unregistered car.                | RF06                   |
+| RN04 | It shouldn't register an existing specification for the same car.             | RF06                   |
+| RN05 | It should register more than one image for the same car.                      | RF09                   |
+| RN06 | It should register a rental with a twenty-four-hour minimum duration.         | RF11                   |
+| RN07 | It shouldn't register a rental if there is an unclosed rent for the user.     | RF11                   |
+| RN08 | It shouldn't register a rental for an unavailable car.                        | RF11                   |
+| RN09 | It should charge the daily rate if the car is returned in less than 24 hours. | RF12                   |
+| RN10 | It should charge a fine if the car's return is late.                          | RF12                   |
+| RN11 | It should allow access to the password recovery link for 3 hours.             | RF14                   |
 
 ## Rocketseat Education
 
