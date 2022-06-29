@@ -1,5 +1,7 @@
 # NodeJS REST API
 
+<img src=".github/UML_class_diagram.svg" width="704px">
+
 ## PostgreSQL with TypeORM
 
 This project uses TypeORM, an Object Relational Mapper that maps model classes to tables in the database so that queries and mutations in the database use an object-oriented paradigm. It is more flexible because it's decoupled from the DBMS currently being used.
