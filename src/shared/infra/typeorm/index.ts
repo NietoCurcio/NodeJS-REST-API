@@ -7,8 +7,8 @@ export const PostgresDataSource = new DataSource({
   username: 'myusername',
   password: 'mypassword',
   database: 'rentx',
-  entities: ['./src/modules/**/entities/*.ts'],
-  migrations: ['./src/database/migrations/*.ts'],
+  entities: ['./src/modules/**/infra/typeorm/entities/*.ts'],
+  migrations: ['./src/shared/infra/typeorm/migrations/*.ts'],
 });
 
 // note, running migrations

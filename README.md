@@ -160,10 +160,10 @@ $ docker exec nodejs-rest-api npm run typeorm migration:run -- -d "./src/databas
 
 | Id   | Description                                                                   | Functional Requirement |
 | ---- | ----------------------------------------------------------------------------- | ---------------------- |
-| RN01 | It shouldn't register a car with an existing license plate.                   | RF01                   |
+| RN01 | It shouldn't register a car with a license plate already existing.            | RF01                   |
 | RN02 | The users should be able to list cars even when not logged in.                | RF02, RF03, RF04, RF05 |
 | RN03 | It shouldn't register a specification for an unregistered car.                | RF06                   |
-| RN04 | It shouldn't register an existing specification for the same car.             | RF06                   |
+| RN04 | It shouldn't register a specification already existing for the same car.      | RF06                   |
 | RN05 | It should register more than one image for the same car.                      | RF09                   |
 | RN06 | It should register a rental with a twenty-four-hour minimum duration.         | RF11                   |
 | RN07 | It shouldn't register a rental if there is an unclosed rent for the user.     | RF11                   |
