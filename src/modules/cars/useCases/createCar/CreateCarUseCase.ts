@@ -1,5 +1,6 @@
 import { Car } from '@modules/cars/infra/typeorm/entities/Car';
 import { ICarsRepository } from '@modules/cars/repositories/ICarsRepository';
+import { ICategoriesRepository } from '@modules/cars/repositories/ICategoriesRepository';
 import { AppError } from '@shared/errors/AppError';
 import { inject, injectable } from 'tsyringe';
 
@@ -10,24 +11,43 @@ interface IRequest {
   license_plate: string;
   fine_amount: number;
   brand: string;
-  category_id: string;
+  categoryId: string;
 }
 
-// @injectable()
+@injectable()
 class CreateCarUseCase {
   constructor(
-    // @inject('CarsRepository') private carsRepository: ICarsRepository
-    private carsRepository: ICarsRepository
+    @inject('CarsRepository') private carsRepository: ICarsRepository,
+    @inject('CategoriesRepository')
+    private categoriesRepository: ICategoriesRepository
   ) {}
 
-  async execute(data: IRequest): Promise<Car> {
+  async execute({
+    brand,
+    categoryId,
+    daily_rate,
+    description,
+    fine_amount,
+    license_plate,
+    name,
+  }: IRequest): Promise<Car> {
     const carAlreadyExists = await this.carsRepository.findByLicensePlate(
-      data.license_plate
+      license_plate
     );
 
     if (carAlreadyExists) throw new AppError('Car already exists');
 
-    return await this.carsRepository.create(data);
+    const category = await this.categoriesRepository.findById(categoryId);
+
+    return await this.carsRepository.create({
+      brand,
+      category,
+      daily_rate,
+      description,
+      fine_amount,
+      license_plate,
+      name,
+    });
   }
 }
 
