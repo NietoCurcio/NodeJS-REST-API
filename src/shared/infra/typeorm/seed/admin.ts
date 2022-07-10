@@ -7,11 +7,11 @@ async function create() {
 
   const userDataSource = PostgresDataSource.getRepository(User);
 
-  const password = await hash('admin', 8);
+  const password = await hash('1234', 8);
 
   const data = {
     name: 'admin',
-    email: 'admin@rentx.com',
+    email: 'admin@gmail.com',
     password,
     isAdmin: true,
     driver_license: '123456',

@@ -1,16 +1,20 @@
 import { Router } from 'express';
-import { ensureAuthenticated } from '../middlewares/ensureAuthenticated';
+import { AuthGuards } from '../middlewares/AuthGuards';
 import { CreateSpecificationController } from '@modules/cars/useCases/createSpecification/CreateSpecificationController';
 import { ListSpecificationController } from '@modules/cars/useCases/listSpecification/ListSpecificationController';
+import { container } from 'tsyringe';
 
 const specificationsRoutes = Router();
 
 const createSpecificationController = new CreateSpecificationController();
 const listSpecificationController = new ListSpecificationController();
 
+const authGuards = container.resolve(AuthGuards);
+
 specificationsRoutes.post(
   '/',
-  ensureAuthenticated,
+  authGuards.authenticated,
+  authGuards.administrator,
   createSpecificationController.handle
 );
 

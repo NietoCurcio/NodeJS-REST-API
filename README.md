@@ -139,6 +139,7 @@ $ docker exec nodejs-rest-api npm run typeorm migration:run -- -d "./src/databas
 | RF03 | List available cars by category | User          |
 | RF04 | List available cars by brand    | User          |
 | RF05 | List available cars by name     | User          |
+| RF06 | Register car's category         | Administrator |
 | RF06 | Register car's specification    | Administrator |
 | RF07 | List all specifications         | Administrator |
 | RF08 | List all categories             | User          |
