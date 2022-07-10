@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
 import { container, inject, injectable } from 'tsyringe';
-import { ListCategoriesService } from './ListCategoriesService';
+import { ListCategoriesUseCase } from './ListCategoriesUseCase';
 
 class ListCategoriesController {
   async handle(request: Request, response: Response): Promise<Response> {
-    const listCategoriesService = container.resolve(ListCategoriesService);
+    const listCategoriesService = container.resolve(ListCategoriesUseCase);
 
     const categories = await listCategoriesService.execute();
 

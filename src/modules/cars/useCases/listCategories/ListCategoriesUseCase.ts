@@ -3,7 +3,7 @@ import { ICategoriesRepository } from '@modules/cars/repositories/ICategoriesRep
 import { Category } from '@modules/cars/infra/typeorm/entities/Category';
 
 @injectable()
-class ListCategoriesService {
+class ListCategoriesUseCase {
   constructor(
     @inject('CategoriesRepository')
     private categoriesRepository: ICategoriesRepository
@@ -14,4 +14,4 @@ class ListCategoriesService {
   }
 }
 
-export { ListCategoriesService };
+export { ListCategoriesUseCase };

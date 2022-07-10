@@ -1,25 +1,31 @@
 import { CarsRepositoryInMemory } from '@modules/cars/repositories/in-memory/CarsRepositoryInMemory';
+import { CategoriesRepositoryInMemory } from '@modules/cars/repositories/in-memory/CategoriesRepositoryInMemory';
 import { AppError } from '@shared/errors/AppError';
 import { CreateCarUseCase } from './CreateCarUseCase';
 
-let createCarUseCase: CreateCarUseCase;
 let carsRepositoryInMemory: CarsRepositoryInMemory;
+let categoriesRepositoryInMemory: CategoriesRepositoryInMemory;
+let createCarUseCase: CreateCarUseCase;
 
 describe('Create car', () => {
   beforeEach(() => {
     carsRepositoryInMemory = new CarsRepositoryInMemory();
-    createCarUseCase = new CreateCarUseCase(carsRepositoryInMemory);
+    categoriesRepositoryInMemory = new CategoriesRepositoryInMemory();
+    createCarUseCase = new CreateCarUseCase(
+      carsRepositoryInMemory,
+      categoriesRepositoryInMemory
+    );
   });
 
   it('should create a new car', async () => {
     const car = await createCarUseCase.execute({
       brand: 'Brand',
-      category_id: 'category',
       daily_rate: 100,
       description: 'Description Car',
       fine_amount: 60,
       license_plate: 'ABC-1234',
       name: 'Name car',
+      categoryId: 'category.id',
     });
 
     expect(car).toHaveProperty('id');
@@ -29,7 +35,7 @@ describe('Create car', () => {
     expect(async () => {
       await createCarUseCase.execute({
         brand: 'Brand',
-        category_id: 'category',
+        categoryId: 'category.id',
         daily_rate: 100,
         description: 'Description Car',
         fine_amount: 60,
@@ -39,7 +45,7 @@ describe('Create car', () => {
 
       await createCarUseCase.execute({
         brand: 'Brand',
-        category_id: 'category',
+        categoryId: 'category.id',
         daily_rate: 100,
         description: 'Description Car',
         fine_amount: 60,
@@ -50,9 +56,17 @@ describe('Create car', () => {
   });
 
   it('should create a car with available true by default', async () => {
+    await categoriesRepositoryInMemory.create({
+      name: 'Category test',
+      description: 'Description category test',
+    });
+    const category = await categoriesRepositoryInMemory.findByName(
+      'Category test'
+    );
+
     const car = await createCarUseCase.execute({
       brand: 'Brand',
-      category_id: 'category',
+      categoryId: category.id,
       daily_rate: 100,
       description: 'Description Car',
       fine_amount: 60,
