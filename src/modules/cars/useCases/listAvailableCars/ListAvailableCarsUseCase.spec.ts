@@ -1,16 +1,18 @@
 import { CarsRepositoryInMemory } from '@modules/cars/repositories/in-memory/CarsRepositoryInMemory';
 import { CategoriesRepositoryInMemory } from '@modules/cars/repositories/in-memory/CategoriesRepositoryInMemory';
-import { ListCarsUseCase } from './ListCarsUseCase';
+import { ListAvailableCarsUseCase } from './ListAvailableCarsUseCase';
 
 let carsRepositoryInMemory: CarsRepositoryInMemory;
 let categoriesRepositoryInMemory: CategoriesRepositoryInMemory;
-let listCarsUseCase: ListCarsUseCase;
+let listAvailableCarsUseCase: ListAvailableCarsUseCase;
 
 describe('List Cars', () => {
   beforeEach(() => {
     carsRepositoryInMemory = new CarsRepositoryInMemory();
     categoriesRepositoryInMemory = new CategoriesRepositoryInMemory();
-    listCarsUseCase = new ListCarsUseCase(carsRepositoryInMemory);
+    listAvailableCarsUseCase = new ListAvailableCarsUseCase(
+      carsRepositoryInMemory
+    );
   });
 
   it('should list all available cars', async () => {
@@ -29,7 +31,7 @@ describe('List Cars', () => {
       },
     });
 
-    const cars = await listCarsUseCase.execute({});
+    const cars = await listAvailableCarsUseCase.execute({});
     expect(cars).toEqual([car]);
   });
 
@@ -64,7 +66,9 @@ describe('List Cars', () => {
       },
     });
 
-    const cars = await listCarsUseCase.execute({ brand: 'Car_brand2' });
+    const cars = await listAvailableCarsUseCase.execute({
+      brand: 'Car_brand2',
+    });
 
     expect(cars).toEqual([car2]);
   });
@@ -100,7 +104,7 @@ describe('List Cars', () => {
       },
     });
 
-    const cars = await listCarsUseCase.execute({ name: 'Car2' });
+    const cars = await listAvailableCarsUseCase.execute({ name: 'Car2' });
 
     expect(cars).toEqual([car2]);
   });
@@ -151,7 +155,9 @@ describe('List Cars', () => {
       },
     });
 
-    const cars = await listCarsUseCase.execute({ categoryId: '123456' });
+    const cars = await listAvailableCarsUseCase.execute({
+      categoryId: '123456',
+    });
 
     expect(cars).toEqual([car1, car2]);
   });
