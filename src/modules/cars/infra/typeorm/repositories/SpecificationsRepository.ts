@@ -1,22 +1,27 @@
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { Specification } from '../entities/Specification';
 import {
   ICreateSpecificationDTO,
-  ISpecificationRepository,
-} from '@modules/cars/repositories/ISpecificationRepository';
+  ISpecificationsRepository,
+} from '@modules/cars/repositories/ISpecificationsRepository';
 import { PostgresDataSource } from '@shared/infra/typeorm';
 
-class SpecificationRepository implements ISpecificationRepository {
+class SpecificationsRepository implements ISpecificationsRepository {
   private repository: Repository<Specification>;
 
   constructor() {
     this.repository = PostgresDataSource.getRepository(Specification);
   }
 
-  async create({ name, description }: ICreateSpecificationDTO): Promise<void> {
+  async create({
+    name,
+    description,
+  }: ICreateSpecificationDTO): Promise<Specification> {
     const specification = this.repository.create({ description, name });
 
     await this.repository.save(specification);
+
+    return specification;
   }
 
   async findByName(name: string): Promise<Specification> {
@@ -25,9 +30,14 @@ class SpecificationRepository implements ISpecificationRepository {
   }
 
   async list(): Promise<Specification[]> {
-    const specifications = this.repository.find();
+    const specifications = await this.repository.find();
+    return specifications;
+  }
+
+  async findByIds(ids: string[]): Promise<Specification[]> {
+    const specifications = await this.repository.findBy({ id: In(ids) });
     return specifications;
   }
 }
 
-export { SpecificationRepository };
+export { SpecificationsRepository };
