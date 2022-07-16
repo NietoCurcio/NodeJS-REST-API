@@ -28,6 +28,7 @@ class CarsRepository implements ICarsRepository {
     const carsQuery = this.repository
       .createQueryBuilder('c')
       .innerJoinAndSelect('c.category', 'category')
+      .leftJoinAndSelect('c.specifications', 'specifications')
       .where('available = :available', { available: true });
 
     if (brand) {
