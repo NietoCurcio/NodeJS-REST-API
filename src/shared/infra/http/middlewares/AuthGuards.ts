@@ -2,8 +2,9 @@ import { NextFunction, Request, Response } from 'express';
 import { AppError } from '@shared/errors/AppError';
 import { JwtPayload, verify } from 'jsonwebtoken';
 import { UsersRepository } from '@modules/accounts/infra/typeorm/repositories/UsersRepository';
-import { container } from 'tsyringe';
+import { container, singleton } from 'tsyringe';
 
+@singleton()
 class AuthGuards {
   async authenticated(
     request: Request,

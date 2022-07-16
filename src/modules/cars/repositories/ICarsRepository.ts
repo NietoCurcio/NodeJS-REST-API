@@ -10,7 +10,12 @@ interface findAvailableParams {
 interface ICarsRepository {
   create(data: ICreateCarDTO): Promise<Car>;
   findByLicensePlate(license_plate: string): Promise<Car>;
-  findAvailable(findAvailableParams): Promise<Car[]>;
+  findAvailable({
+    categoryId,
+    brand,
+    name,
+  }: findAvailableParams): Promise<Car[]>;
+  findAvailableById(id: string): Promise<Car>;
   findById(id: string): Promise<Car>;
 }
 

@@ -29,6 +29,7 @@ class CarsRepository implements ICarsRepository {
       .createQueryBuilder('c')
       .innerJoinAndSelect('c.category', 'category')
       .leftJoinAndSelect('c.specifications', 'specifications')
+      .leftJoinAndSelect('c.images', 'images')
       .where('available = :available', { available: true });
 
     if (brand) {
@@ -46,6 +47,20 @@ class CarsRepository implements ICarsRepository {
     const cars = await carsQuery.getMany();
 
     return cars;
+  }
+
+  async findAvailableById(id: string): Promise<Car> {
+    const carQuery = this.repository
+      .createQueryBuilder('car')
+      .innerJoinAndSelect('car.category', 'category')
+      .leftJoinAndSelect('car.specifications', 'specifications')
+      .leftJoinAndSelect('car.images', 'images')
+      .where('car.id = :id', { id })
+      .andWhere('car.available = :available', { available: true });
+
+    const car = await carQuery.getOne();
+
+    return car;
   }
 
   async findById(id: string): Promise<Car> {
