@@ -26,7 +26,7 @@ export class CreateRentals1658006525737 implements MigrationInterface {
             onUpdate: 'SET NULL',
           },
           {
-            name: 'FKUserImages',
+            name: 'FKUserRental',
             columnNames: ['userId'],
             referencedColumnNames: ['id'],
             referencedTableName: 'users',
