@@ -170,8 +170,10 @@ $ docker exec nodejs-rest-api npm run typeorm migration:run -- -d "./src/databas
 | RN07 | It shouldn't register a rental if there is an unclosed rent for the user.     | RF11                   |
 | RN08 | It shouldn't register a rental for an unavailable car.                        | RF11                   |
 | RN09 | It should charge the daily rate if the car is returned in less than 24 hours. | RF12                   |
-| RN10 | It should charge a fine if the car's return is late.                          | RF12                   |
+| RN10 | It should charge a proportional fine if the car's return is late.             | RF12                   |
 | RN11 | It should allow access to the password recovery link for 3 hours.             | RF14                   |
+| RN12 | It should make a car unavailable once it is registered in a rental            | RF11                   |
+| RN13 | It should make the car available for rental once its return is registered     | RF12                   |
 
 ## Rocketseat Education
 
