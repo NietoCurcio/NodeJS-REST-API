@@ -1,7 +1,7 @@
 import { ICreateRentalDTO } from '@modules/rentals/dtos/ICreateRentalDTO';
 import { IRentalsRepository } from '@modules/rentals/repositories/IRentalsRepository';
 import { PostgresDataSource } from '@shared/infra/typeorm';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import { Rental } from '../entities/Rental';
 
 class RentalsRepository implements IRentalsRepository {
@@ -12,12 +12,22 @@ class RentalsRepository implements IRentalsRepository {
   }
 
   async findOpenRentalByCarId(carId: string): Promise<Rental> {
-    const rental = await this.repository.findOneBy({ carId });
+    const rental = await this.repository
+      .createQueryBuilder('rental')
+      .where('rental.carId = :carId', { carId })
+      .andWhere('rental.end_date IS null')
+      .getOne();
+
     return rental;
   }
 
   async findOpenRentalByUserId(userId: string): Promise<Rental> {
-    const rental = await this.repository.findOneBy({ userId });
+    const rental = await this.repository
+      .createQueryBuilder('rental')
+      .where('rental.userId = :userId', { userId })
+      .andWhere('rental.end_date IS null')
+      .getOne();
+
     return rental;
   }
 

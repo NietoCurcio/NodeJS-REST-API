@@ -17,6 +17,13 @@ class DayjsDateProvider implements IDateProvider {
   dateNow(): Date {
     return dayjs().toDate();
   }
+
+  compareInDays(start_date: Date, end_date: Date): number {
+    const endDateLocalUTC = this.convertToLocalUTC(end_date);
+    const startDateLocalUTC = this.convertToLocalUTC(start_date);
+
+    return dayjs(endDateLocalUTC).diff(startDateLocalUTC, 'days');
+  }
 }
 
 export { DayjsDateProvider };
