@@ -47,8 +47,8 @@ class CreateRentalUseCase {
     if (compare < minimumHours) throw new AppError('Invalid return date');
 
     const rental = await this.rentalsRepository.create({
-      userId,
       carId,
+      userId,
       expected_return_date,
     });
 

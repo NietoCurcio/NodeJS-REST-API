@@ -7,7 +7,7 @@
     "build": "babel src --extensions \".ts\" --out-dir dist --copy-files",
     "dev": "ts-node-dev -r tsconfig-paths/register --poll --inspect --respawn --transpile-only src/shared/infra/http/server.ts",
     "typeorm": "typeorm-ts-node-esm",
-    "test": "cross-env NODE_ENV=test jest",
+    "test": "cross-env NODE_ENV=test jest --runInBand",
     "seed:admin": "ts-node-dev --require tsconfig-paths/register src/shared/infra/typeorm/seed/admin.ts"
   },
   "keywords": [],
