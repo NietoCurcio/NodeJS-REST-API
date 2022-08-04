@@ -19,15 +19,11 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "name": "string",
-                  "description": "string"
-                },
-                "example": {
-                  "name": "Category name sample",
-                  "description": "Category description sample"
-                }
+                "$ref": "#/definitions/Category"
+              },
+              "example": {
+                "name": "Category name sample",
+                "description": "Category description sample"
               }
             }
           }
@@ -53,15 +49,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "type": "object",
-                    "properties": {
-                      "name": {
-                        "type": "string"
-                      },
-                      "description": {
-                        "type": "string"
-                      }
-                    }
+                    "$ref": "#/definitions/Specification"
                   }
                 }
               }
@@ -75,6 +63,7 @@
         "tags": ["Category"],
         "summary": "Upload new categories",
         "description": "Upload new categories",
+        "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "content": {
             "multipart/form-data": {
@@ -102,6 +91,7 @@
         "tags": ["Specifications"],
         "summary": "Create a specification",
         "description": "Create a new specification",
+        "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "content": {
             "application/json": {
@@ -148,6 +138,76 @@
           }
         }
       }
+    },
+    "/cars": {
+      "post": {
+        "tags": ["Cars"],
+        "summary": "Create a car",
+        "description": "Create a car",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/Car"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Car already exists"
+          }
+        }
+      }
+    },
+    "/cars/images/{carId}": {
+      "post": {
+        "tags": ["Cars"],
+        "summary": "Upload Car images",
+        "description": "Upload Car images",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "carId",
+            "in": "path",
+            "description": "Car id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "images": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "404": {
+            "description": "Car does not exists"
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -159,6 +219,43 @@
         },
         "description": {
           "type": "string"
+        }
+      }
+    },
+    "Category": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "Car": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "daily_rate": {
+          "type": "number"
+        },
+        "fine_amount": {
+          "type": "number"
+        },
+        "license_plate": {
+          "type": "string"
+        },
+        "brand": {
+          "type": "string"
+        },
+        "category": {
+          "$ref": "#/definitions/Category"
         }
       }
     }
