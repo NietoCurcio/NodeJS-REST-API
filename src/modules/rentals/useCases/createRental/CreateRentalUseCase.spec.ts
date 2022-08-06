@@ -62,104 +62,99 @@ describe('Create Rental', () => {
   });
 
   it('should not create a rental for a user with an unclosed rental', async () => {
-    expect(async () => {
-      const user = await usersRepositoryInMemory.findByEmail('test@gmail.com');
+    const user = await usersRepositoryInMemory.findByEmail('test@gmail.com');
 
-      const car = await carsRepositoryInMemory.create({
-        name: 'test',
-        brand: 'brand',
-        category: new Category(),
-        daily_rate: 10,
-        description: 'desc',
-        fine_amount: 10,
-        license_plate: '1234',
-      });
+    const car = await carsRepositoryInMemory.create({
+      name: 'test',
+      brand: 'brand',
+      category: new Category(),
+      daily_rate: 10,
+      description: 'desc',
+      fine_amount: 10,
+      license_plate: '1234',
+    });
 
-      const car2 = await carsRepositoryInMemory.create({
-        name: 'test2',
-        brand: 'brand',
-        category: new Category(),
-        daily_rate: 10,
-        description: 'desc',
-        fine_amount: 10,
-        license_plate: '1234',
-      });
+    const car2 = await carsRepositoryInMemory.create({
+      name: 'test2',
+      brand: 'brand',
+      category: new Category(),
+      daily_rate: 10,
+      description: 'desc',
+      fine_amount: 10,
+      license_plate: '1234',
+    });
 
-      await createRentalUseCase.execute({
-        userId: user.id,
-        carId: car.id,
-        expected_return_date: add24hours,
-      });
+    await createRentalUseCase.execute({
+      userId: user.id,
+      carId: car.id,
+      expected_return_date: add24hours,
+    });
 
-      await createRentalUseCase.execute({
+    await expect(
+      createRentalUseCase.execute({
         userId: user.id,
         carId: car2.id,
         expected_return_date: add24hours,
-      });
-    }).rejects.toBeInstanceOf(AppError);
+      })
+    ).rejects.toEqual(new AppError("There's an unclosed rent for the user"));
   });
 
-  it('should not create a rental for a car with an unclosed rental', () => {
-    expect(async () => {
-      const user = await usersRepositoryInMemory.findByEmail('test@gmail.com');
+  it('should not create a rental for a car with an unclosed rental', async () => {
+    const user = await usersRepositoryInMemory.findByEmail('test@gmail.com');
 
-      await usersRepositoryInMemory.create({
-        email: 'test2@gmail.com',
-        name: 'test2',
-        password: '123',
-        driver_license: '1234',
-      });
+    await usersRepositoryInMemory.create({
+      email: 'test2@gmail.com',
+      name: 'test2',
+      password: '123',
+      driver_license: '1234',
+    });
 
-      const user2 = await usersRepositoryInMemory.findByEmail(
-        'test2@gmail.com'
-      );
+    const user2 = await usersRepositoryInMemory.findByEmail('test2@gmail.com');
 
-      const car = await carsRepositoryInMemory.create({
-        name: 'test',
-        brand: 'brand',
-        category: new Category(),
-        daily_rate: 10,
-        description: 'desc',
-        fine_amount: 10,
-        license_plate: '1234',
-      });
+    const car = await carsRepositoryInMemory.create({
+      name: 'test',
+      brand: 'brand',
+      category: new Category(),
+      daily_rate: 10,
+      description: 'desc',
+      fine_amount: 10,
+      license_plate: '1234',
+    });
 
-      await createRentalUseCase.execute({
-        userId: user.id,
-        carId: car.id,
-        expected_return_date: add24hours,
-      });
+    await createRentalUseCase.execute({
+      userId: user.id,
+      carId: car.id,
+      expected_return_date: add24hours,
+    });
 
-      await createRentalUseCase.execute({
+    await expect(
+      createRentalUseCase.execute({
         userId: user2.id,
         carId: car.id,
         expected_return_date: add24hours,
-      });
-    }).rejects.toBeInstanceOf(AppError);
+      })
+    ).rejects.toEqual(new AppError('Car unavailable'));
   });
 
-  it('should not create a rental with invalid return date', () => {
-    expect(async () => {
-      const user = await usersRepositoryInMemory.findByEmail('test@gmail.com');
+  it('should not create a rental with invalid return date', async () => {
+    const user = await usersRepositoryInMemory.findByEmail('test@gmail.com');
 
-      const car = await carsRepositoryInMemory.create({
-        name: 'test',
-        brand: 'brand',
-        category: new Category(),
-        daily_rate: 10,
-        description: 'desc',
-        fine_amount: 10,
-        license_plate: '1234',
-      });
+    const car = await carsRepositoryInMemory.create({
+      name: 'test',
+      brand: 'brand',
+      category: new Category(),
+      daily_rate: 10,
+      description: 'desc',
+      fine_amount: 10,
+      license_plate: '1234',
+    });
 
-      await createRentalUseCase.execute({
+    await expect(
+      createRentalUseCase.execute({
         userId: user.id,
         carId: car.id,
         expected_return_date: dayjs().toDate(),
-      });
-    }).rejects.toMatchObject({
-      message: 'Invalid return date',
-      statusCode: 400,
-    });
+      })
+    ).rejects.toMatchObject(new AppError('Invalid return date'));
   });
 });

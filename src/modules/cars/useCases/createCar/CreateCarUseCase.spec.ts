@@ -41,8 +41,8 @@ describe('Create car', () => {
   });
 
   it('should not create a new car with non-existing category', async () => {
-    expect(async () => {
-      const car = await createCarUseCase.execute({
+    await expect(
+      createCarUseCase.execute({
         brand: 'Brand',
         daily_rate: 100,
         description: 'Description Car',
@@ -50,27 +50,27 @@ describe('Create car', () => {
         license_plate: 'ABC-1234',
         name: 'Name car',
         categoryId: 'category.id',
-      });
-    }).rejects.toBeInstanceOf(AppError);
+      })
+    ).rejects.toEqual(new AppError('Category does not exists', 404));
   });
 
-  it('should not create a car with a license plate already existing', () => {
-    expect(async () => {
-      const categoryTest = await categoriesRepositoryInMemory.findByName(
-        'Category test'
-      );
+  it('should not create a car with a license plate already existing', async () => {
+    const categoryTest = await categoriesRepositoryInMemory.findByName(
+      'Category test'
+    );
 
-      await createCarUseCase.execute({
-        brand: 'Brand',
-        daily_rate: 100,
-        description: 'Description Car',
-        fine_amount: 60,
-        license_plate: 'ABC-1234',
-        name: 'Name car',
-        categoryId: categoryTest.id,
-      });
+    await createCarUseCase.execute({
+      brand: 'Brand',
+      daily_rate: 100,
+      description: 'Description Car',
+      fine_amount: 60,
+      license_plate: 'ABC-1234',
+      name: 'Name car',
+      categoryId: categoryTest.id,
+    });
 
-      await createCarUseCase.execute({
+    await expect(
+      createCarUseCase.execute({
         brand: 'Brand',
         daily_rate: 100,
         description: 'Description Car',
@@ -78,8 +78,8 @@ describe('Create car', () => {
         license_plate: 'ABC-1234',
         name: 'Name car2',
         categoryId: categoryTest.id,
-      });
-    }).rejects.toBeInstanceOf(AppError);
+      })
+    ).rejects.toEqual(new AppError('Car already exists'));
   });
 
   it('should create a car with available true by default', async () => {

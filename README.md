@@ -125,7 +125,12 @@ $ docker-compuse up -d
 
 ```shell
 # Execute the migrations in the running container
-$ docker exec nodejs-rest-api npm run typeorm migration:run -- -d "./src/database/index.ts"
+$ docker exec nodejs-rest-api npm run typeorm migration:run -- -d "./src/shared/infra/typeorm/index.ts"
+```
+
+```shell
+# Run unit and integration tests
+$ npm run test
 ```
 
 ## Requirements engineering

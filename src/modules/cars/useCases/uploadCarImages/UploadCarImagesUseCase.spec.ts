@@ -49,12 +49,12 @@ describe('Upload Car Images', () => {
     expect(car).not.toMatchObject([]);
   });
 
-  it("should not create a car's images for a non-existing car.", () => {
-    expect(async () => {
-      const carId = 'newCar.id1234';
-      const image_names = ['name1', 'name2'];
+  it("should not create a car's images for a non-existing car.", async () => {
+    const carId = 'newCar.id1234';
+    const image_names = ['name1', 'name2'];
 
-      await uploadCarImagesUseCase.execute({ carId, image_names });
-    }).rejects.toBeInstanceOf(AppError);
+    await expect(
+      uploadCarImagesUseCase.execute({ carId, image_names })
+    ).rejects.toEqual(new AppError('Car does not exists', 404));
   });
 });
