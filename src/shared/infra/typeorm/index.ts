@@ -15,6 +15,10 @@ export async function InitPostgresDataSource() {
   try {
     await PostgresDataSource.initialize();
     console.log('Data Source has been initialized!');
+
+    await PostgresDataSource.runMigrations();
+
+    console.log('Migrations executed!');
   } catch (err) {
     console.error('Error during Data Source initialization', err);
   }

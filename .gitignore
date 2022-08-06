@@ -6,4 +6,6 @@ tmp/*
 
 .env
 
+src/config/auth.ts
+
 .jest/setEnvVars.ts
