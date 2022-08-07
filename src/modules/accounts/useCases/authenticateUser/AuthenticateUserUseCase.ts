@@ -30,15 +30,36 @@ class AuthenticateUserUseCase {
     @inject('DayjsDateProvider') private dateProvider: IDateProvider
   ) {}
 
+  async generateToken(userId: string): Promise<string> {
+    const token = sign({}, auth.jwt_secret_token, {
+      subject: userId,
+      expiresIn: auth.token_expiration,
+    });
+
+    return token;
+  }
+
+  async generateRefreshToken(userId: string, email: string): Promise<string> {
+    const refresh_token = sign({ email }, auth.jwt_secret_refresh_token, {
+      subject: userId,
+      expiresIn: auth.refresh_token_expiration,
+    });
+
+    const refresh_token_expiration_date = this.dateProvider.addDays(
+      auth.refresh_token_expiration_days
+    );
+
+    await this.usersTokensRepository.create({
+      expiration_date: refresh_token_expiration_date,
+      refresh_token,
+      userId: userId,
+    });
+
+    return refresh_token;
+  }
+
   async execute({ email, password }: IRequest): Promise<IResponse> {
     const user = await this.usersRepository.findByEmail(email);
-    const {
-      jwt_secret_refresh_token,
-      jwt_secret_token,
-      refresh_token_expiration,
-      refresh_token_expiration_days,
-      token_expiration,
-    } = auth;
 
     if (!user) throw new AppError('Email or password incorrect');
 
@@ -46,25 +67,9 @@ class AuthenticateUserUseCase {
 
     if (!passwordMatch) throw new AppError('Email or password incorrect');
 
-    const token = sign({}, jwt_secret_token, {
-      subject: user.id,
-      expiresIn: token_expiration,
-    });
+    const token = await this.generateToken(user.id);
 
-    const refresh_token = sign({ email }, jwt_secret_refresh_token, {
-      subject: user.id,
-      expiresIn: refresh_token_expiration,
-    });
-
-    const refresh_token_expiration_date = this.dateProvider.addDays(
-      refresh_token_expiration_days
-    );
-
-    await this.usersTokensRepository.create({
-      expiration_date: refresh_token_expiration_date,
-      refresh_token,
-      userId: user.id,
-    });
+    const refresh_token = await this.generateRefreshToken(user.id, email);
 
     return {
       user: {

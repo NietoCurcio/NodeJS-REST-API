@@ -3,6 +3,7 @@ import { AppError } from '@shared/errors/AppError';
 import { JwtPayload, verify } from 'jsonwebtoken';
 import { UsersRepository } from '@modules/accounts/infra/typeorm/repositories/UsersRepository';
 import { container, singleton } from 'tsyringe';
+import auth from '@config/auth';
 
 @singleton()
 class AuthGuards {
@@ -20,7 +21,7 @@ class AuthGuards {
 
       const { sub: user_id } = verify(
         token,
-        process.env.JWT_SECRET_KEY
+        auth.jwt_secret_token
       ) as JwtPayload;
 
       const usersRepository = container.resolve(UsersRepository);
@@ -34,6 +35,8 @@ class AuthGuards {
 
       next();
     } catch (err) {
+      if (err.message === 'jwt expired') throw new AppError(err.message, 401);
+
       throw err;
     }
   }
