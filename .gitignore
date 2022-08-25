@@ -9,3 +9,5 @@ tmp/*
 src/config/auth.ts
 
 .jest/setEnvVars.ts
+
+coverage
