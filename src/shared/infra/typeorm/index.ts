@@ -11,19 +11,30 @@ export const PostgresDataSource = new DataSource({
   migrations: ['./src/shared/infra/typeorm/migrations/*.ts'],
 });
 
-export async function InitPostgresDataSource() {
-  try {
-    await PostgresDataSource.initialize();
-    console.log('Data Source has been initialized!');
+class InitDataSource {
+  public hasMigrationsBeenRan: boolean = false;
+  private dataSource: DataSource;
 
-    await PostgresDataSource.runMigrations();
+  constructor(dataSource: DataSource) {
+    this.dataSource = dataSource;
+  }
 
-    console.log('Migrations executed!');
-  } catch (err) {
-    console.error('Error during Data Source initialization', err);
+  async init() {
+    try {
+      await this.dataSource.initialize();
+      console.log('Data Source has been initialized!');
+
+      await this.dataSource.runMigrations();
+      this.hasMigrationsBeenRan = true;
+      console.log('Migrations executed!');
+    } catch (err) {
+      console.error('Error during Data Source initialization');
+      console.error(err);
+    }
   }
 }
 
+export const initDataSource = new InitDataSource(PostgresDataSource);
 // note, running migrations
 // docker exec nodejs-rest-api npm run typeorm migration:run -- -d "./src/database/index.ts"
 

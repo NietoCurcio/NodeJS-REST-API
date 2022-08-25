@@ -7,11 +7,11 @@ import swaggerUi from 'swagger-ui-express';
 import swaggerFile from '../../../swagger.json';
 import { AppError } from '@shared/errors/AppError';
 import { router } from './routes';
-import { InitPostgresDataSource } from '../typeorm';
+import { initDataSource } from '../typeorm';
 
 const app = express();
 
-InitPostgresDataSource();
+initDataSource.init();
 
 app.use(express.json());
 

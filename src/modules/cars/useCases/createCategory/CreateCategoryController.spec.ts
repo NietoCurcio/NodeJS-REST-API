@@ -2,14 +2,13 @@ import { app } from '@shared/infra/http/app';
 import request from 'supertest';
 import { hash } from 'bcryptjs';
 import { User } from '@modules/accounts/infra/typeorm/entities/User';
-import { PostgresDataSource } from '@shared/infra/typeorm';
+import { initDataSource, PostgresDataSource } from '@shared/infra/typeorm';
+import { waitFor } from '@utils/async';
 
 describe('Create Category Controller', () => {
   beforeAll(async () => {
-    if (!PostgresDataSource.isInitialized)
-      await PostgresDataSource.initialize();
-
-    await PostgresDataSource.runMigrations();
+    // without this, the migrations will run at the same time, yielding a conflict
+    await waitFor(() => initDataSource.hasMigrationsBeenRan === true);
 
     const userDataSource = PostgresDataSource.getRepository(User);
     const password = await hash('1234', 8);
@@ -67,7 +66,6 @@ describe('Create Category Controller', () => {
   });
 
   afterAll(async () => {
-    await PostgresDataSource.dropDatabase();
     await PostgresDataSource.destroy();
   });
 });
