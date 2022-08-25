@@ -1,4 +1,5 @@
 import auth from '@config/auth';
+import { UserTokens } from '@modules/accounts/infra/typeorm/entities/UserTokens';
 import { IUsersTokensRepository } from '@modules/accounts/repositories/IUsersTokensRepository';
 import { IDateProvider } from '@shared/container/providers/DateProvider/IDateProvider';
 import { AppError } from '@shared/errors/AppError';
@@ -23,7 +24,10 @@ class RefreshTokenUseCase {
     @inject('DayjsDateProvider') private dateProvider: IDateProvider
   ) {}
 
-  async invalidateRefreshToken(userId: string, refresh_token: string) {
+  async getRefreshToken(
+    userId: string,
+    refresh_token: string
+  ): Promise<UserTokens> {
     const userToken =
       await this.usersTokensRepository.findByUserIdAndRefreshToken(
         userId,
@@ -32,6 +36,19 @@ class RefreshTokenUseCase {
 
     if (!userToken) throw new AppError('Refresh token does not exists', 401);
 
+    return userToken;
+  }
+
+  async verifyRefreshToken(userToken: UserTokens) {
+    const compare = this.dateProvider.compareInHours(
+      this.dateProvider.dateNow(),
+      userToken.expiration_date
+    );
+
+    if (compare <= 0) throw new AppError('Refresh token expired');
+  }
+
+  async invalidateRefreshToken(userToken: UserTokens) {
     await this.usersTokensRepository.deleteById(userToken.id);
   }
 
@@ -69,7 +86,11 @@ class RefreshTokenUseCase {
       auth.jwt_secret_refresh_token
     ) as IPayload;
 
-    await this.invalidateRefreshToken(userId, refresh_token);
+    const userToken = await this.getRefreshToken(userId, refresh_token);
+
+    await this.verifyRefreshToken(userToken);
+
+    await this.invalidateRefreshToken(userToken);
 
     const new_refresh_token = await this.generateRefreshToken(userId, email);
 
