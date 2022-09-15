@@ -13,9 +13,9 @@ class UploadCarImagesController {
 
     const uploadCarImagesUseCase = container.resolve(UploadCarImagesUseCase);
 
-    const image_names = images.map((image) => image.filename);
+    const images_name = images.map((image) => image.filename);
 
-    const car = await uploadCarImagesUseCase.execute({ carId, image_names });
+    const car = await uploadCarImagesUseCase.execute({ carId, images_name });
 
     return response.json(car);
   }

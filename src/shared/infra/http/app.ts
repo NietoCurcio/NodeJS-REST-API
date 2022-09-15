@@ -8,6 +8,7 @@ import swaggerFile from '../../../swagger.json';
 import { AppError } from '@shared/errors/AppError';
 import { router } from './routes';
 import { initDataSource } from '../typeorm';
+import { UploadConfig } from '@config/Upload';
 
 const app = express();
 
@@ -16,6 +17,8 @@ initDataSource.init();
 app.use(express.json());
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
+
+app.use('/tmp', express.static(`${UploadConfig.tmpFolder}`));
 
 app.use(router);
 

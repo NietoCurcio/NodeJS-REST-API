@@ -120,6 +120,16 @@ $ docker-compose down
 
 The authentication is done through JSON Web Tokens and Refresh Tokens. This approach allows the token to have a short expiration time. Once it is necessary to generate a JWT, the client sends the refresh token to the server to get a valid one together with a new refresh token which will be in hand to update the token later. It brings greater security, first that if a malicious user gets the token it will have a short duration. Second, the backend is also signing the refresh token for integrity checking. The compromised refresh token can also be revoked or denied from the database. This approach also improves user experience, since the refresh token can be acquired by sending an HTTP request by the app running on the client-side, instead of having to prompt the user to authenticate again after a specific time. The downside is the refresh token must be maintained in the database (invalidating already used refresh tokens appropriately).
 
+## Storage
+
+This application uses AWS S3 as storage provider for users avatar and car images.
+
+## Mail Provider
+
+- Ethereal Mail: fake SMTP service
+
+- AWS Simple Email Service (SES):
+
 ## Deploy
 
 ## Running the application
