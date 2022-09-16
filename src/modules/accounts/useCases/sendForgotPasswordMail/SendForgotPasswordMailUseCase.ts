@@ -14,7 +14,7 @@ class SendForgotPasswordMailUseCase {
     @inject('UsersTokensRepository')
     private usersTokensRepository: IUsersTokensRepository,
     @inject('DayjsDateProvider') private dateProvider: IDateProvider,
-    @inject('EtherealMailProvider') private mailProvider: IMailProvider
+    @inject('MailProvider') private mailProvider: IMailProvider
   ) {}
 
   async execute(email: string) {

@@ -126,9 +126,13 @@ This application uses AWS S3 as storage provider for users avatar and car images
 
 ## Mail Provider
 
-- Ethereal Mail: fake SMTP service
+The emails are sent using the [nodemailer](https://nodemailer.com/about/) packages, which deliver messages through SMTP transport and other transports like SES.
 
-- AWS Simple Email Service (SES):
+- [Ethereal](https://ethereal.email) Mail: fake SMTP service.
+
+- AWS Simple Email Service [(SES)](https://aws.amazon.com/ses/): an email platform that provides an easy, cost-effective way to send and receive email using your email addresses and domains. SES can be used through the Query (HTTPS) API or an SMTP interface. A domain name (DNS) was purchased and configured with [Google Domains](https://domains.google/). The domain email setup was provided by [Zoho](https://www.zoho.com) service.
+
+There are some services that could be used through SMTP such as SendGrid, MailGun, MailChimp, etc.
 
 ## Deploy
 
